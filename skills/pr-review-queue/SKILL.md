@@ -108,9 +108,12 @@ per-repo, and getting them wrong distorts the whole ordering. Before ranking,
 spend a moment on:
 
 - **A project skill for this repo**, if one exists — a repo that cares about
-  review triage usually has its conventions written down (in this setup,
-  `pr-review-queue-monorepo` in the work monorepo). Read it and follow it over
-  anything general in this file.
+  review triage usually has its conventions written down. Read it and follow it
+  over anything general in this file. Look for `.claude/skills/*review*/SKILL.md`
+  and read it **as a file**: a project skill sharing this skill's name is
+  shadowed by this one, so it never shows up in the skill list. The work
+  monorepo has a full version at `.claude/skills/pr-review-queue/SKILL.md`,
+  which supersedes this file inside that repo.
 - **Otherwise `.github/`**: the workflow that applies risk or review labels (is
   it automated, and does it measure attention or effort?), the stale or
   inactive-PR workflow's warn and close windows, `CODEOWNERS` for how requests
