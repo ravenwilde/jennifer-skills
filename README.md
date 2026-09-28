@@ -73,8 +73,8 @@ The layout matches what `npx skills` expects, so anyone can install these with:
   and model.
 - `respond-to-copilot-review`: assess Copilot's PR review comments, fix the valid
   ones in one commit per round, and reply to every comment.
-- `pr-review-queue`: triage the PRs waiting on me into a guide ordered lowest to
-  highest effort, with what to look at in each. Filters out the drafts and
-  conflicting PRs first, and flags auto-close deadlines.
+- `review-queue-triage`: triage the PRs waiting on me into a guide ordered
+  lowest to highest effort, with what to look at in each. Filters out the drafts
+  and conflicting PRs first, and flags auto-close deadlines.
 - `shortcut-doc-fetch`: read a Shortcut doc from its URL, ID, or title through
   the Shortcut MCP server. Decodes the `/write/` link to the UUID the API needs.

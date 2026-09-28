@@ -1,5 +1,5 @@
 ---
-name: pr-review-queue
+name: review-queue-triage
 description: Triage a queue of pull requests waiting on the user and hand back a guide that orders them from lowest to highest effort, with what to look at in each one. Use when the user asks what they should review, which PRs are waiting on them, to work through their review queue or review-requested list, to plan or prioritise reviews, or shares a github.com/.../pulls/review-requested/@me style link. This plans the reviews; it does not perform them and posts nothing to GitHub.
 ---
 
@@ -108,12 +108,9 @@ per-repo, and getting them wrong distorts the whole ordering. Before ranking,
 spend a moment on:
 
 - **A project skill for this repo**, if one exists — a repo that cares about
-  review triage usually has its conventions written down. Read it and follow it
-  over anything general in this file. Look for `.claude/skills/*review*/SKILL.md`
-  and read it **as a file**: a project skill sharing this skill's name is
-  shadowed by this one, so it never shows up in the skill list. The work
-  monorepo has a full version at `.claude/skills/pr-review-queue/SKILL.md`,
-  which supersedes this file inside that repo.
+  review triage usually has its conventions written down. Follow it over
+  anything general in this file. The work monorepo has its own full version,
+  `pr-review-queue`, which supersedes this file inside that repo.
 - **Otherwise `.github/`**: the workflow that applies risk or review labels (is
   it automated, and does it measure attention or effort?), the stale or
   inactive-PR workflow's warn and close windows, `CODEOWNERS` for how requests
