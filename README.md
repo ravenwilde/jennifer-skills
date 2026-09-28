@@ -73,3 +73,5 @@ The layout matches what `npx skills` expects, so anyone can install these with:
   and model.
 - `respond-to-copilot-review`: assess Copilot's PR review comments, fix the valid
   ones in one commit per round, and reply to every comment.
+- `shortcut-doc-fetch`: read a Shortcut doc from its URL, ID, or title through
+  the Shortcut MCP server. Decodes the `/write/` link to the UUID the API needs.
