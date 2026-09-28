@@ -101,70 +101,25 @@ Keep the guide in chat. Offer in one line to publish it as a page with
 checkboxes if they want to track progress across sittings; publish only on a
 yes.
 
-## Repo specifics: useshortcut/monorepo
+## Pick up the repo's own conventions
 
-Conventions of the repo this skill was written against. Elsewhere, ignore this
-section and read the repo's own `.github/` for the equivalents.
+Label meanings, stale-bot timings, review routing and bot-comment quality are
+per-repo, and getting them wrong distorts the whole ordering. Before ranking,
+spend a moment on:
 
-**The `risk:` and `review:` labels are one automated judgement, not two.**
-`.github/workflows/global-pr-summary-risk.yml` reads
-`.github/pr-review/RISK-RUBRIC.md`, has a model rate the PR `risk:0`–`risk:5`,
-and then derives `review:trivial` (risk 0–1) or `review:detailed` (risk 2+).
-So `review:` adds nothing, and the rubric rates **blast radius and
-reversibility — how much attention the change needs — not how long review
-takes**. It defaults to 3 when unsure. Treat a high risk label as a prompt to
-check the rubric's high-sensitivity surfaces (tx-fns, `zero_schema` and
-migrations, auth and tokens, billing, `connector_*` and webhooks, lockfiles and
-dependency bumps, Terraform, and on the marketing sites the consent and
-analytics pipeline), and treat a low one as no guarantee of a small review.
+- **A project skill for this repo**, if one exists — a repo that cares about
+  review triage usually has its conventions written down (in this setup,
+  `pr-review-queue-monorepo` in the work monorepo). Read it and follow it over
+  anything general in this file.
+- **Otherwise `.github/`**: the workflow that applies risk or review labels (is
+  it automated, and does it measure attention or effort?), the stale or
+  inactive-PR workflow's warn and close windows, `CODEOWNERS` for how requests
+  are routed, and the PR templates for what authors are expected to supply.
 
-**Auto-close clock.** `global-inactive-pull-requests.yml`: 7 days without
-activity adds `inactive-pr` plus a warning comment, 7 more days closes the PR —
-14 days total. Any update resets it, and closed PRs get reopened and carry on,
-so an `inactive-pr` label plus a 7-day-old warning means "closes about now";
-give the date. A PR that has been closed and reopened before is a sign the
-author has moved on — worth a nudge rather than a review.
-
-**Other labels.** Project labels (`backend`, `korey-frontend`,
-`shortcut-frontend`, `docs`, …) come from `.github/labeler.yml` paths, so they
-restate the diff. `sc-team:*` comes from outside the repo's own workflows and is
-the quickest read on which team owns the work. `deploy:production-*` is release
-bookkeeping — ignore it.
-
-**Who is actually being asked.** Reviews usually arrive through the `Frontend`
-or `Backend` GitHub team rather than by name, with `.github/CODEOWNERS` adding
-named owners for specific backend modules. On a full-stack PR a team request
-means that side's files only: name them and ignore the rest. Requests from
-`.github/OWNERS` names (tobias, semperos, opoku, iwillig, charpeni) are
-personal and worth more.
-
-**Bot comments, in the order they are worth reading.** `claude` with a
-`<!-- pr-summary-risk -->` marker is the best orientation available and is
-unverified. `blacksmith-sh` names failing tests — but the repeat offenders
-(`auth.setup.ts`, `consent.setup.ts`, `signup.spec.ts`, archived-chats and
-all-chats specs) are usually flakes, so trust the check rollup over an old
-Blacksmith comment, and A/B a suspicious Playwright failure against a green
-PR's preview before blaming the diff. `devin-ai-integration` sometimes posts
-real browser verification with measurements, which is a genuine discount on
-manual checking. Skip `shortcut-integration` story links (they occasionally
-link nonsense like "Story #123"), deploy-preview and backend-PR-environment
-comments except for their URLs, `codecov` activation notices, and `ShortcutBot`
-workspace-lock errors.
-
-**Verifying things yourself.** Frontend PRs get a preview at
-`https://<n>-<sha>.preview.app.shortcut-staging.com`, and backend PRs a full
-environment at `pr-<n>-api.app.shortcut-staging.com` — both linked from a
-`github-actions` comment, both far cheaper than a local build. Local checks per
-subproject are in the root `CLAUDE.md`: `yarn lint && yarn type-check &&
-yarn test:vitest` in `shortcut-frontend`, `bun run lint && bun run ts &&
-bun run test:unit` in `korey-frontend`, and backend tests through the
-dev-system nREPL on port 7888 rather than a fresh JVM.
-
-**Missing homework worth flagging.** The templates in
-`.github/PULL_REQUEST_TEMPLATE/` ask for testing steps, rollout notes and
-screenshots on UI changes; a UI PR whose screenshots section says "To add" is a
-fair thing to ask for before spending the review. Frontend UI also needs a look
-in both themes, and CSS in this repo must not use `var()` fallbacks.
+Two defaults that hold widely: a `risk:`-style label usually rates blast radius
+rather than review time, and a recurring failing spec across several PRs is a
+flake rather than the diff's fault — check it against another PR before
+believing it.
 
 ## Scope
 
