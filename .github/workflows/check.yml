@@ -1,0 +1,21 @@
+name: check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/check.sh
+      - run: bash -n install.sh
+      - name: install.sh round-trip into a scratch root
+        run: |
+          root="$RUNNER_TEMP/skills"
+          ./install.sh -t "link:$root" -t "copy:$RUNNER_TEMP/copied"
+          ./install.sh -t "link:$root" -t "copy:$RUNNER_TEMP/copied" | tee out.txt
+          ! grep -Eq '^  (link|copy|update|relink|remove) ' out.txt   # second run is a no-op
+          ./install.sh -u -t "link:$root" -t "copy:$RUNNER_TEMP/copied"
+          [ -z "$(find "$root" "$RUNNER_TEMP/copied" -mindepth 1)" ]
